@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — matte, editorial, warm. Never pure black, never pure white.
+--------------------------------------------------------------------------- */
+:root {
+  --base: #0b0b0c;
+  --elevated: #141416;
+  --card: #1a1a1d;
+  --hairline: rgba(255, 255, 255, 0.06);
+  --hairline-strong: rgba(255, 255, 255, 0.12);
+  --text: #ede6da;
+  --muted: #9a948b;
+  --accent: #e8833a;
+  --accent-hover: #f2954e;
+  --accent-glow: rgba(232, 131, 58, 0.35);
+  --accent-deep: #c75b39;
+
+  --radius: 14px;
+  --radius-lg: 18px;
+}
+
+@theme inline {
+  --color-base: var(--base);
+  --color-elevated: var(--elevated);
+  --color-card: var(--card);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-deep: var(--accent-deep);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+
+  --radius-card: var(--radius);
+  --radius-panel: var(--radius-lg);
+}
+
+* {
+  border-color: var(--hairline);
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Offset for the sticky nav when jumping to #sections */
+  scroll-padding-top: 6rem;
+}
+
+body {
+  background-color: var(--base);
+  color: var(--text);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-glow);
+  color: var(--text);
+}
+
+/* ---------------------------------------------------------------------------
+   Grain — a fixed, non-interactive noise layer keeps large flat areas matte
+   instead of glossy. Inline SVG, so it costs no network request.
+--------------------------------------------------------------------------- */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* One faint warm glow, hero only. */
+.hero-glow {
+  position: absolute;
+  top: -18rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90rem, 160vw);
+  height: 48rem;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(232, 131, 58, 0.16) 0%,
+    rgba(199, 91, 57, 0.07) 35%,
+    transparent 68%
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+--------------------------------------------------------------------------- */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Fraunces is a variable serif — dial in optical size and a little softness. */
+.font-display {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-variation-settings: "SOFT" 20, "WONK" 1;
+  letter-spacing: -0.02em;
+}
+
+.hairline-t {
+  border-top: 1px solid var(--hairline);
+}
+.hairline-b {
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* Focus ring — visible for keyboard users, never for mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Autofill in the admin forms otherwise turns fields Chrome-blue. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: 0 0 0 1000px var(--elevated) inset;
+  caret-color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

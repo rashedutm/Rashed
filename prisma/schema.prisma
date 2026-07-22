@@ -1,0 +1,173 @@
+// Prisma schema — standard MySQL only (no TiDB-specific features), so this
+// works against TiDB Cloud Serverless, Oracle Cloud MySQL, or any MySQL 8 host.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectStatus {
+  draft
+  published
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique @db.VarChar(191)
+  passwordHash String   @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Single-row table holding everything about the site owner.
+model Profile {
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(191)
+  headline        String   @db.VarChar(255)
+  tagline         String   @db.VarChar(255)
+  bio             String   @db.Text
+  aboutMe         String   @db.Text
+  email           String   @db.VarChar(191)
+  phone           String   @db.VarChar(64)
+  location        String   @db.VarChar(191)
+  githubUrl       String?  @db.VarChar(500)
+  linkedinUrl     String?  @db.VarChar(500)
+  profileImageUrl String?  @db.VarChar(500)
+  resumeUrl       String?  @db.VarChar(500)
+  heroVideoUrl    String?  @db.VarChar(500)
+  availability    String?  @db.VarChar(255)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Skill {
+  id        Int      @id @default(autoincrement())
+  category  String   @db.VarChar(191)
+  name      String   @db.VarChar(191)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, sortOrder])
+}
+
+model Experience {
+  id        Int      @id @default(autoincrement())
+  company   String   @db.VarChar(191)
+  role      String   @db.VarChar(191)
+  location  String?  @db.VarChar(191)
+  startDate String   @db.VarChar(64)
+  endDate   String?  @db.VarChar(64)
+  current   Boolean  @default(false)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bullets ExperienceBullet[]
+
+  @@index([sortOrder])
+}
+
+model ExperienceBullet {
+  id           Int    @id @default(autoincrement())
+  experienceId Int
+  text         String @db.Text
+  sortOrder    Int    @default(0)
+
+  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  @@index([experienceId, sortOrder])
+}
+
+model Project {
+  id           Int           @id @default(autoincrement())
+  title        String        @db.VarChar(191)
+  subtitle     String?       @db.VarChar(255)
+  slug         String        @unique @db.VarChar(191)
+  category     String        @db.VarChar(191)
+  description  String        @db.Text
+  role         String?       @db.VarChar(255)
+  thumbnailUrl String?       @db.VarChar(500)
+  videoUrl     String?       @db.VarChar(500)
+  liveUrl      String?       @db.VarChar(500)
+  repoUrl      String?       @db.VarChar(500)
+  featured     Boolean       @default(false)
+  status       ProjectStatus @default(published)
+  sortOrder    Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  media    ProjectMedia[]
+  tech     ProjectTech[]
+  features ProjectFeature[]
+
+  @@index([category, sortOrder])
+  @@index([status])
+}
+
+model ProjectMedia {
+  id        Int     @id @default(autoincrement())
+  projectId Int
+  url       String  @db.VarChar(500)
+  caption   String? @db.VarChar(255)
+  sortOrder Int     @default(0)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, sortOrder])
+}
+
+model ProjectTech {
+  id        Int    @id @default(autoincrement())
+  projectId Int
+  techName  String @db.VarChar(191)
+  sortOrder Int    @default(0)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, sortOrder])
+}
+
+/// "Key features" bullet list shown on the project detail page.
+model ProjectFeature {
+  id        Int    @id @default(autoincrement())
+  projectId Int
+  text      String @db.Text
+  sortOrder Int    @default(0)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, sortOrder])
+}
+
+model Award {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(191)
+  place     String?  @db.VarChar(191)
+  result    String?  @db.VarChar(191)
+  date      String?  @db.VarChar(64)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortOrder])
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  institution String   @db.VarChar(191)
+  degree      String   @db.VarChar(191)
+  location    String?  @db.VarChar(191)
+  startDate   String   @db.VarChar(64)
+  endDate     String?  @db.VarChar(64)
+  current     Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([sortOrder])
+}

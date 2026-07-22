@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { Project, ProjectFeature, ProjectMedia, ProjectTech } from "@prisma/client";
 import { hueFromString, initials, isDirectVideo, safeUrl, toYouTubeEmbedUrl } from "@/lib/utils";
+import { FittedMedia } from "./FittedMedia";
 
 type FullProject = Project & {
   tech: ProjectTech[];
@@ -39,10 +40,11 @@ export function ProjectDetail({ project }: { project: FullProject }) {
             className="h-full w-full"
           />
         ) : video && isDirectVideo(video) ? (
-          <video src={video} controls playsInline className="h-full w-full object-cover" />
+          // object-contain keeps the whole frame visible; letterbox bars stay
+          // black rather than cropping the picture.
+          <video src={video} controls playsInline className="h-full w-full object-contain" />
         ) : thumb ? (
-          /* eslint-disable-next-line @next/next/no-img-element -- admin-supplied remote URL */
-          <img src={thumb} alt={project.title} className="h-full w-full object-cover" />
+          <FittedMedia src={thumb} alt={project.title} eager />
         ) : (
           <div
             className="flex h-full w-full items-center justify-center"
@@ -129,15 +131,9 @@ export function ProjectDetail({ project }: { project: FullProject }) {
               <SectionLabel>Gallery</SectionLabel>
               <div className="grid gap-4 sm:grid-cols-2">
                 {gallery.map((item) => (
-                  <figure key={item.id}>
-                    <div className="bg-elevated overflow-hidden rounded-[var(--radius)] border border-[var(--hairline)]">
-                      {/* eslint-disable-next-line @next/next/no-img-element -- admin-supplied remote URL */}
-                      <img
-                        src={item.url}
-                        alt={item.caption ?? ""}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.02] motion-reduce:transform-none"
-                      />
+                  <figure key={item.id} className="group">
+                    <div className="bg-elevated relative aspect-[4/3] overflow-hidden rounded-[var(--radius)] border border-[var(--hairline)]">
+                      <FittedMedia src={item.url} alt={item.caption ?? ""} zoomOnHover />
                     </div>
                     {item.caption && (
                       <figcaption className="text-muted mt-2 text-[13px]">{item.caption}</figcaption>

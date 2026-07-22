@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { hueFromString, initials, safeUrl } from "@/lib/utils";
+import { FittedMedia } from "./FittedMedia";
 
 export type PosterProject = {
   slug: string;
@@ -31,15 +32,7 @@ export function PosterCard({ project, index = 0 }: { project: PosterProject; ind
       >
         <div className="relative aspect-[16/10] overflow-hidden">
           {thumb ? (
-            /* eslint-disable-next-line @next/next/no-img-element -- URLs come from
-               the admin panel and can point at any host, so we skip next/image
-               remote-pattern config rather than have images silently 400. */
-            <img
-              src={thumb}
-              alt=""
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transform-none"
-            />
+            <FittedMedia src={thumb} zoomOnHover />
           ) : (
             <div
               className="flex h-full w-full items-center justify-center"

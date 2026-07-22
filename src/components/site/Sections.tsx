@@ -1,5 +1,6 @@
 import type { Award, Education, Experience, ExperienceBullet, Profile } from "@prisma/client";
 import { Section } from "./Section";
+import { FittedMedia } from "./FittedMedia";
 import { formatDateRange, initials, safeUrl } from "@/lib/utils";
 
 export function About({ profile }: { profile: Profile }) {
@@ -11,13 +12,7 @@ export function About({ profile }: { profile: Profile }) {
         <div>
           <div className="bg-elevated relative aspect-square w-full max-w-[220px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)]">
             {image ? (
-              /* eslint-disable-next-line @next/next/no-img-element -- admin-supplied remote URL */
-              <img
-                src={image}
-                alt={profile.name}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
+              <FittedMedia src={image} alt={profile.name} />
             ) : (
               <div className="from-accent-deep/25 flex h-full w-full items-center justify-center bg-gradient-to-br to-transparent">
                 <span className="font-display text-accent/50 text-5xl">

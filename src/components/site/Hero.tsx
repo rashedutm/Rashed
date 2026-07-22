@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { isDirectVideo, safeUrl, toYouTubeEmbedUrl } from "@/lib/utils";
+import { FittedMedia } from "./FittedMedia";
 
 type HeroProps = {
   name: string;
@@ -105,11 +106,10 @@ export function Hero({ name, headline, tagline, availability, resumeUrl, heroVid
                 muted
                 loop
                 playsInline
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               />
             ) : (
-              /* eslint-disable-next-line @next/next/no-img-element -- admin-supplied remote URL */
-              <img src={video} alt="" className="h-full w-full object-cover" />
+              <FittedMedia src={video} eager />
             )}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B0B0C] via-transparent to-transparent" />
           </div>

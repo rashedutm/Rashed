@@ -37,7 +37,7 @@ export function Hero({
   });
 
   return (
-    <section className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-14">
+    <section className="relative flex min-h-svh flex-col justify-center overflow-hidden pt-24 pb-24 sm:pt-28">
       {/* Bold aurora — vivid colour bleeding through the dark canvas, sitting
           behind and around the hero text so the whole block feels lit. */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -125,6 +125,34 @@ export function Hero({
           )}
         </motion.div>
       </div>
+
+      {/* Scroll cue — signals there's work below the full-height hero. */}
+      <motion.a
+        href="#work"
+        aria-label="Scroll to work"
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        className="text-muted hover:text-accent absolute inset-x-0 bottom-7 mx-auto flex w-fit flex-col items-center gap-1.5 text-[10px] tracking-[0.2em] uppercase transition-colors"
+      >
+        Scroll
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          aria-hidden="true"
+          className="animate-bounce motion-reduce:animate-none"
+        >
+          <path
+            d="M4 6l4 4 4-4"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </motion.a>
 
       {video && (
         <motion.div

@@ -7,7 +7,7 @@ export function About({ profile }: { profile: Profile }) {
   const image = safeUrl(profile.profileImageUrl);
 
   return (
-    <Section id="about" eyebrow="About" title="Who I am">
+    <Section id="about" eyebrow="About" title="Who I am" accent="#2fb6ab">
       <div className="grid gap-10 md:grid-cols-[minmax(0,220px)_minmax(0,1fr)] md:gap-14">
         <div>
           <div className="bg-elevated relative aspect-square w-full max-w-[220px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--hairline)]">
@@ -46,7 +46,7 @@ export function Skills({
   if (groups.length === 0) return null;
 
   return (
-    <Section id="skills" eyebrow="Toolkit" title="Skills">
+    <Section id="skills" eyebrow="Toolkit" title="Skills" accent="#e8833a">
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {groups.map((group) => (
           <div key={group.category}>
@@ -76,7 +76,7 @@ export function ExperienceList({ items }: { items: ExperienceWithBullets[] }) {
   if (items.length === 0) return null;
 
   return (
-    <Section id="experience" eyebrow="Career" title="Experience">
+    <Section id="experience" eyebrow="Career" title="Experience" accent="#e6b24a">
       <div className="space-y-px">
         {items.map((item) => (
           <article
@@ -115,7 +115,7 @@ export function Awards({ items }: { items: Award[] }) {
   if (items.length === 0) return null;
 
   return (
-    <Section id="awards" eyebrow="Recognition" title="Awards">
+    <Section id="awards" eyebrow="Recognition" title="Awards" accent="#ef6b52">
       <div className="grid gap-4 sm:grid-cols-2">
         {items.map((award) => (
           <article
@@ -142,7 +142,7 @@ export function EducationList({ items }: { items: Education[] }) {
   if (items.length === 0) return null;
 
   return (
-    <Section id="education" eyebrow="Background" title="Education">
+    <Section id="education" eyebrow="Background" title="Education" accent="#4aa8d8">
       <div className="space-y-px">
         {items.map((item) => (
           <article
@@ -172,10 +172,28 @@ export function SiteFooter({ profile }: { profile: Profile }) {
   return (
     <footer id="contact" className="mt-8 scroll-mt-24 border-t border-[var(--hairline)]">
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
-        <p className="text-accent mb-2 text-[11px] tracking-[0.18em] uppercase">Contact</p>
+        <p
+          className="mb-2 flex items-center gap-2 text-[11px] tracking-[0.18em] uppercase"
+          style={{ color: "var(--accent-2)" }}
+        >
+          <span
+            className="h-1.5 w-1.5 rounded-full"
+            style={{ background: "var(--accent-2)" }}
+            aria-hidden="true"
+          />
+          Contact
+        </p>
         <h2 className="font-display max-w-2xl text-[clamp(1.8rem,4.5vw,3rem)] leading-tight text-balance">
           Let&rsquo;s build something.
         </h2>
+
+        <a
+          href={`mailto:${profile.email}`}
+          className="hover:bg-accent-2-hover mt-6 inline-block rounded-full px-6 py-3 text-sm font-medium text-[#04110F] transition-all duration-300"
+          style={{ background: "var(--accent-2)" }}
+        >
+          Email me
+        </a>
 
         <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <FooterItem label="Email">

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const LINKS = [
   { href: "/#work", label: "Work" },
   { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/#experience", label: "Experience" },
 ];
 
 export function SiteNav({ name }: { name: string }) {
@@ -38,7 +38,7 @@ export function SiteNav({ name }: { name: string }) {
           {name}
         </Link>
 
-        <div className="hidden items-center gap-9 md:flex">
+        <div className="hidden items-center gap-8 md:flex">
           {LINKS.map((link) => (
             <Link
               key={link.href}
@@ -48,6 +48,14 @@ export function SiteNav({ name }: { name: string }) {
               {link.label}
             </Link>
           ))}
+          {/* Contact is promoted to a filled button — a larger, distinct target
+              that's reachable from anywhere without scrolling (Fitts's Law). */}
+          <Link
+            href="/#contact"
+            className="bg-accent hover:bg-accent-hover rounded-full px-4 py-2 text-sm font-medium text-[#1A0F06] transition-all duration-300 hover:shadow-[0_8px_24px_-8px_var(--accent-glow)]"
+          >
+            Contact
+          </Link>
         </div>
 
         <button
@@ -79,17 +87,24 @@ export function SiteNav({ name }: { name: string }) {
 
       {open && (
         <div className="bg-base/95 border-t border-[var(--hairline)] backdrop-blur-xl md:hidden">
-          <div className="flex flex-col px-5 py-2 sm:px-8">
+          <div className="flex flex-col px-5 py-3 sm:px-8">
             {LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="text-muted hover:text-text border-b border-[var(--hairline)] py-3 text-sm transition-colors last:border-0"
+                className="text-muted hover:text-text border-b border-[var(--hairline)] py-3 text-sm transition-colors"
               >
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/#contact"
+              onClick={() => setOpen(false)}
+              className="bg-accent hover:bg-accent-hover mt-4 rounded-full px-4 py-2.5 text-center text-sm font-medium text-[#1A0F06] transition-colors"
+            >
+              Contact
+            </Link>
           </div>
         </div>
       )}

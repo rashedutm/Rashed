@@ -2,13 +2,22 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PosterCard, type PosterProject } from "./PosterCard";
+import { PRIMARY_COLOR, type CategoryColor } from "@/lib/categories";
 import { cn } from "@/lib/utils";
 
 /**
  * One Netflix-style horizontal row. Scrolls with snap points, hides its
  * scrollbar, and shows arrow controls only when there is actually overflow.
  */
-export function Shelf({ category, items }: { category: string; items: PosterProject[] }) {
+export function Shelf({
+  category,
+  items,
+  accent = PRIMARY_COLOR,
+}: {
+  category: string;
+  items: PosterProject[];
+  accent?: CategoryColor;
+}) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -47,7 +56,14 @@ export function Shelf({ category, items }: { category: string; items: PosterProj
   return (
     <section className="group/shelf relative">
       <div className="mb-4 flex items-baseline justify-between px-5 sm:px-8 lg:px-12">
-        <h2 className="font-display text-xl tracking-tight sm:text-2xl">{category}</h2>
+        <h2 className="font-display flex items-center gap-2.5 text-xl tracking-tight sm:text-2xl">
+          <span
+            className="h-4 w-1 rounded-full"
+            style={{ background: accent.base }}
+            aria-hidden="true"
+          />
+          {category}
+        </h2>
         <span className="text-muted text-xs tabular-nums">
           {items.length} {items.length === 1 ? "project" : "projects"}
         </span>
@@ -76,7 +92,7 @@ export function Shelf({ category, items }: { category: string; items: PosterProj
               key={project.slug}
               className="w-[248px] shrink-0 snap-start sm:w-[286px] lg:w-[310px]"
             >
-              <PosterCard project={project} index={i} />
+              <PosterCard project={project} index={i} accent={accent} />
             </div>
           ))}
         </div>

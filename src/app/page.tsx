@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNav } from "@/components/site/SiteNav";
 import { Hero } from "@/components/site/Hero";
-import { Shelf } from "@/components/site/Shelf";
+import { WorkSection } from "@/components/site/WorkSection";
 import {
   About,
   Awards,
@@ -60,21 +60,18 @@ export default async function HomePage() {
           headline={profile.headline}
           tagline={profile.tagline}
           availability={profile.availability}
+          email={profile.email}
           resumeUrl={profile.resumeUrl}
           heroVideoUrl={profile.heroVideoUrl}
         />
 
-        <div id="work" className="scroll-mt-24 space-y-10 py-10">
-          {shelves.length > 0 ? (
-            shelves.map((shelf) => (
-              <Shelf key={shelf.category} category={shelf.category} items={shelf.items} />
-            ))
-          ) : (
-            <p className="text-muted mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-              No published projects yet.
-            </p>
-          )}
-        </div>
+        {shelves.length > 0 ? (
+          <WorkSection shelves={shelves} />
+        ) : (
+          <p className="text-muted mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:px-12">
+            No published projects yet.
+          </p>
+        )}
 
         <About profile={profile} />
         <Skills groups={skills} />

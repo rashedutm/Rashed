@@ -10,11 +10,20 @@ type HeroProps = {
   headline: string;
   tagline: string;
   availability?: string | null;
+  email?: string | null;
   resumeUrl?: string | null;
   heroVideoUrl?: string | null;
 };
 
-export function Hero({ name, headline, tagline, availability, resumeUrl, heroVideoUrl }: HeroProps) {
+export function Hero({
+  name,
+  headline,
+  tagline,
+  availability,
+  email,
+  resumeUrl,
+  heroVideoUrl,
+}: HeroProps) {
   const reduceMotion = useReducedMotion();
   const resume = safeUrl(resumeUrl);
   const video = safeUrl(heroVideoUrl);
@@ -44,16 +53,16 @@ export function Hero({ name, headline, tagline, availability, resumeUrl, heroVid
 
         <motion.h1
           {...rise(0.06)}
-          className="font-display max-w-4xl text-[clamp(2.4rem,7vw,4.6rem)] leading-[1.03] text-balance"
+          className="font-display text-gradient max-w-4xl text-[clamp(2rem,7vw,4.6rem)] leading-[1.05] text-balance"
         >
           {name}
         </motion.h1>
 
         <motion.p
           {...rise(0.13)}
-          className="text-accent mt-5 max-w-2xl text-lg leading-snug sm:text-xl"
+          className="mt-5 max-w-2xl text-lg leading-snug sm:text-xl"
         >
-          {headline}
+          <span className="text-accent">{headline}</span>
         </motion.p>
 
         <motion.p
@@ -70,12 +79,21 @@ export function Hero({ name, headline, tagline, availability, resumeUrl, heroVid
           >
             View Work
           </Link>
+          {email && (
+            <a
+              href={`mailto:${email}`}
+              className="rounded-full border px-6 py-3 text-sm font-medium transition-all duration-300"
+              style={{ borderColor: "var(--accent-2)", color: "var(--accent-2)" }}
+            >
+              Get in touch
+            </a>
+          )}
           {resume && (
             <a
               href={resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text rounded-full border border-[var(--hairline-strong)] px-6 py-3 text-sm font-medium transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              className="text-muted hover:text-text rounded-full border border-[var(--hairline-strong)] px-6 py-3 text-sm font-medium transition-colors duration-300 hover:border-[var(--text)]/30"
             >
               Download Résumé
             </a>

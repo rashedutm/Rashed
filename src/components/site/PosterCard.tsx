@@ -1,8 +1,10 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { hueFromString, initials, safeUrl } from "@/lib/utils";
+import { initials, safeUrl } from "@/lib/utils";
+import { PRIMARY_COLOR, type CategoryColor } from "@/lib/categories";
 import { FittedMedia } from "./FittedMedia";
 
 export type PosterProject = {
@@ -13,10 +15,25 @@ export type PosterProject = {
   tech: { id: number; techName: string }[];
 };
 
-export function PosterCard({ project, index = 0 }: { project: PosterProject; index?: number }) {
+export function PosterCard({
+  project,
+  index = 0,
+  accent = PRIMARY_COLOR,
+}: {
+  project: PosterProject;
+  index?: number;
+  accent?: CategoryColor;
+}) {
   const reduceMotion = useReducedMotion();
   const thumb = safeUrl(project.thumbnailUrl);
-  const hue = hueFromString(project.slug);
+
+  // Category colour drives the hover glow, the title hover, and the placeholder
+  // gradient — so a card visibly belongs to its category.
+  const style = {
+    "--c": accent.base,
+    "--c-glow": accent.glow,
+    "--c-soft": accent.soft,
+  } as CSSProperties;
 
   return (
     <motion.div
@@ -25,10 +42,11 @@ export function PosterCard({ project, index = 0 }: { project: PosterProject; ind
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.3), ease: [0.22, 1, 0.36, 1] }}
       className="group h-full"
+      style={style}
     >
       <Link
         href={`/project/${project.slug}`}
-        className="bg-card flex h-full flex-col overflow-hidden rounded-[var(--radius)] border border-[var(--hairline)] transition-[transform,box-shadow,border-color] duration-400 ease-out will-change-transform group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:border-[var(--hairline-strong)] group-hover:shadow-[0_18px_50px_-12px_var(--accent-glow)] motion-reduce:transform-none motion-reduce:transition-none"
+        className="bg-card flex h-full flex-col overflow-hidden rounded-[var(--radius)] border border-[var(--hairline)] transition-[transform,box-shadow,border-color] duration-300 ease-out will-change-transform group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:border-[color:var(--c)]/40 group-hover:shadow-[0_18px_50px_-12px_var(--c-glow)] motion-reduce:transform-none motion-reduce:transition-none"
       >
         <div className="relative aspect-[16/10] overflow-hidden">
           {thumb ? (
@@ -37,22 +55,27 @@ export function PosterCard({ project, index = 0 }: { project: PosterProject; ind
             <div
               className="flex h-full w-full items-center justify-center"
               style={{
-                background: `linear-gradient(140deg, hsl(${hue} 42% 16%) 0%, hsl(${hue + 8} 30% 10%) 55%, #141416 100%)`,
+                background: `linear-gradient(140deg, color-mix(in srgb, ${accent.base} 26%, #141416) 0%, #141416 62%)`,
               }}
             >
               <span
                 className="font-display text-4xl tracking-tight"
-                style={{ color: `hsl(${hue} 55% 62% / 0.55)` }}
+                style={{ color: `color-mix(in srgb, ${accent.base} 62%, transparent)` }}
               >
                 {initials(project.title)}
               </span>
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0C]/70 via-transparent to-transparent" />
+          {/* Thin colour bar keys the card to its category. */}
+          <div
+            className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
+            style={{ background: accent.base }}
+          />
         </div>
 
         <div className="flex flex-1 flex-col gap-1.5 p-4">
-          <h3 className="font-display group-hover:text-accent text-[15px] leading-snug transition-colors duration-300">
+          <h3 className="font-display text-[15px] leading-snug transition-colors duration-300 group-hover:text-[color:var(--c)]">
             {project.title}
           </h3>
           {project.subtitle && (

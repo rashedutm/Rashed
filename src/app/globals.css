@@ -4,17 +4,25 @@
    Design tokens — matte, editorial, warm. Never pure black, never pure white.
 --------------------------------------------------------------------------- */
 :root {
-  --base: #0b0b0c;
-  --elevated: #141416;
-  --card: #1a1a1d;
+  --base: #0b0a0a; /* very slightly warmer than before */
+  --elevated: #161518;
+  --card: #1b1a1e;
   --hairline: rgba(255, 255, 255, 0.06);
-  --hairline-strong: rgba(255, 255, 255, 0.12);
+  --hairline-strong: rgba(255, 255, 255, 0.13);
   --text: #ede6da;
   --muted: #9a948b;
+
+  /* Primary — warm amber */
   --accent: #e8833a;
   --accent-hover: #f2954e;
   --accent-glow: rgba(232, 131, 58, 0.35);
   --accent-deep: #c75b39;
+
+  /* Secondary — teal. Amber's complementary opposite, so the two together
+     read as vivid and intentional rather than as a single warm wash. */
+  --accent-2: #2fb6ab;
+  --accent-2-hover: #43c9be;
+  --accent-2-glow: rgba(47, 182, 171, 0.32);
 
   --radius: 14px;
   --radius-lg: 18px;
@@ -31,6 +39,8 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-deep: var(--accent-deep);
+  --color-accent-2: var(--accent-2);
+  --color-accent-2-hover: var(--accent-2-hover);
 
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-inter);
@@ -51,6 +61,14 @@ html {
 
 body {
   background-color: var(--base);
+  /* Layered, fixed color glows so no part of the page is ever flat black.
+     Warm amber and burnt sienna up top, a cool teal counterweight low down —
+     complementary warmth/coolness gives the dark canvas depth. */
+  background-image:
+    radial-gradient(55rem 38rem at 12% -8%, rgba(232, 131, 58, 0.11), transparent 60%),
+    radial-gradient(48rem 40rem at 100% 6%, rgba(47, 182, 171, 0.08), transparent 55%),
+    radial-gradient(60rem 50rem at 50% 118%, rgba(199, 91, 57, 0.09), transparent 60%);
+  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -109,6 +127,15 @@ body {
   font-family: var(--font-fraunces), ui-serif, Georgia, serif;
   font-variation-settings: "SOFT" 20, "WONK" 1;
   letter-spacing: -0.02em;
+}
+
+/* Warm gradient text — stays light enough to read while adding colour. */
+.text-gradient {
+  background: linear-gradient(96deg, #f4eee3 0%, #f4cf95 46%, #f2954e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .hairline-t {

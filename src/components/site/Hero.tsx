@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { isDirectVideo, safeUrl, toYouTubeEmbedUrl } from "@/lib/utils";
+import { initials, isDirectVideo, safeUrl, toYouTubeEmbedUrl } from "@/lib/utils";
 import { FittedMedia } from "./FittedMedia";
 
 type HeroProps = {
@@ -36,10 +36,32 @@ export function Hero({
   });
 
   return (
-    <section className="relative overflow-hidden pt-36 pb-16 sm:pt-44 sm:pb-20">
-      <div className="hero-glow" aria-hidden="true" />
+    <section className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-14">
+      {/* Bold aurora — vivid colour bleeding through the dark canvas, sitting
+          behind and around the hero text so the whole block feels lit. */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div
+          className="aurora-blob aurora-animate top-[4rem] -left-16 h-[32rem] w-[32rem] sm:left-0"
+          style={{ background: "radial-gradient(circle, rgba(232,131,58,0.78), transparent 62%)" }}
+        />
+        <div
+          className="aurora-blob aurora-animate top-[1rem] right-[2rem] h-[28rem] w-[28rem]"
+          style={{
+            background: "radial-gradient(circle, rgba(47,182,171,0.62), transparent 62%)",
+            animationDelay: "-5s",
+          }}
+        />
+        <div
+          className="aurora-blob aurora-animate top-[13rem] left-[38%] h-[26rem] w-[26rem]"
+          style={{
+            background: "radial-gradient(circle, rgba(239,107,82,0.52), transparent 62%)",
+            animationDelay: "-9s",
+          }}
+        />
+      </div>
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:px-12">
+        <div>
         {availability && (
           <motion.div {...rise(0)} className="mb-7">
             <span className="text-muted inline-flex items-center gap-2 rounded-full border border-[var(--hairline)] px-3.5 py-1.5 text-xs">
@@ -98,6 +120,37 @@ export function Hero({
               Download Résumé
             </a>
           )}
+        </motion.div>
+        </div>
+
+        {/* Colourful spectrum badge — fills the hero's right side with the
+            palette itself, so the first screen is vivid rather than empty. */}
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="relative hidden justify-self-center lg:block"
+          aria-hidden="true"
+        >
+          <div className="relative aspect-square w-[22rem] xl:w-[26rem]">
+            <div
+              className="absolute inset-4 rounded-full opacity-90 blur-2xl"
+              style={{
+                background:
+                  "conic-gradient(from 130deg, #e8833a, #e6b24a, #8fb84a, #2fb6ab, #4aa8d8, #ef6b52, #e8833a)",
+              }}
+            />
+            <div className="bg-base/30 absolute inset-8 rounded-full border border-white/10 backdrop-blur-xl" />
+            <div
+              className="absolute inset-8 rounded-full"
+              style={{ boxShadow: "inset 0 0 60px rgba(0,0,0,0.6)" }}
+            />
+            <div className="absolute inset-0 grid place-items-center">
+              <span className="font-display text-text/90 text-6xl tracking-tight xl:text-7xl">
+                {initials(name)}
+              </span>
+            </div>
+          </div>
         </motion.div>
       </div>
 

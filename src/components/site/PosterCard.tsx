@@ -46,7 +46,7 @@ export function PosterCard({
     >
       <Link
         href={`/project/${project.slug}`}
-        className="bg-card flex h-full flex-col overflow-hidden rounded-[var(--radius)] border border-[var(--hairline)] transition-[transform,box-shadow,border-color] duration-300 ease-out will-change-transform group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:border-[color:var(--c)]/40 group-hover:shadow-[0_18px_50px_-12px_var(--c-glow)] motion-reduce:transform-none motion-reduce:transition-none"
+        className="bg-card flex h-full flex-col overflow-hidden rounded-[var(--radius)] border border-[color:var(--c)]/25 shadow-[0_10px_36px_-22px_var(--c-glow)] transition-[transform,box-shadow,border-color] duration-300 ease-out will-change-transform group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:border-[color:var(--c)]/70 group-hover:shadow-[0_22px_60px_-14px_var(--c-glow)] motion-reduce:transform-none motion-reduce:transition-none"
       >
         <div className="relative aspect-[16/10] overflow-hidden">
           {thumb ? (
@@ -66,11 +66,12 @@ export function PosterCard({
               </span>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0C]/70 via-transparent to-transparent" />
-          {/* Thin colour bar keys the card to its category. */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0C]/75 via-transparent to-transparent" />
+          {/* Colour bar keys the card to its category — always visible, and it
+              grows to full brightness on hover. */}
           <div
-            className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
-            style={{ background: accent.base }}
+            className="absolute inset-x-0 bottom-0 h-[3px] opacity-70 transition-opacity duration-300 group-hover:opacity-100"
+            style={{ background: accent.base, boxShadow: `0 0 16px 1px ${accent.glow}` }}
           />
         </div>
 

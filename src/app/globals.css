@@ -65,9 +65,10 @@ body {
      Warm amber and burnt sienna up top, a cool teal counterweight low down —
      complementary warmth/coolness gives the dark canvas depth. */
   background-image:
-    radial-gradient(55rem 38rem at 12% -8%, rgba(232, 131, 58, 0.11), transparent 60%),
-    radial-gradient(48rem 40rem at 100% 6%, rgba(47, 182, 171, 0.08), transparent 55%),
-    radial-gradient(60rem 50rem at 50% 118%, rgba(199, 91, 57, 0.09), transparent 60%);
+    radial-gradient(50rem 34rem at 8% -6%, rgba(232, 131, 58, 0.2), transparent 58%),
+    radial-gradient(46rem 38rem at 102% 4%, rgba(47, 182, 171, 0.16), transparent 55%),
+    radial-gradient(40rem 34rem at 88% 55%, rgba(239, 107, 82, 0.1), transparent 55%),
+    radial-gradient(60rem 48rem at 30% 116%, rgba(199, 91, 57, 0.14), transparent 60%);
   background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -112,6 +113,41 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+   Aurora — bold, blurred colour blobs used behind the hero (and reusable
+   elsewhere). This is the main "eye-catching on dark" element: vivid amber,
+   teal and coral light bleeding through the near-black canvas.
+--------------------------------------------------------------------------- */
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  pointer-events: none;
+  will-change: transform, opacity;
+  /* Screen blending makes the colour add as light on the dark canvas, so the
+     glow reads as vivid neon instead of muddy brown. */
+  mix-blend-mode: screen;
+}
+@keyframes aurora-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate3d(2rem, 1.4rem, 0) scale(1.08);
+    opacity: 1;
+  }
+}
+.aurora-animate {
+  animation: aurora-drift 14s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .aurora-animate {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Utilities
 --------------------------------------------------------------------------- */
 .hide-scrollbar {
@@ -129,9 +165,9 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* Warm gradient text — stays light enough to read while adding colour. */
+/* Warm gradient text — vivid amber→coral sweep that still reads clearly. */
 .text-gradient {
-  background: linear-gradient(96deg, #f4eee3 0%, #f4cf95 46%, #f2954e 100%);
+  background: linear-gradient(96deg, #f6ede0 0%, #f2b45a 38%, #f2954e 68%, #ef6b52 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -71,8 +71,8 @@ export function WorkSection({ shelves }: { shelves: ShelfData[] }) {
                   className={cn(
                     "flex shrink-0 items-center gap-2 rounded-full border px-4 py-1.5 text-[13px] font-medium whitespace-nowrap transition-all duration-300",
                     isActive
-                      ? "border-[color:var(--c)] bg-[color:var(--c-soft)] text-[color:var(--c)]"
-                      : "text-muted hover:text-text border-[var(--hairline-strong)] hover:border-[color:var(--c)]",
+                      ? "border-[color:var(--c)] bg-[color:var(--c-soft)] text-[color:var(--c)] shadow-[0_4px_18px_-6px_var(--c)]"
+                      : "border-[color:var(--c)]/30 text-[color:var(--c)]/85 hover:border-[color:var(--c)] hover:bg-[color:var(--c-soft)]",
                   )}
                 >
                   {chip.category !== ALL && (

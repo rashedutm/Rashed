@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn, initials } from "@/lib/utils";
 
 const LINKS = [
   { href: "/#work", label: "Work" },
@@ -31,11 +31,12 @@ export function SiteNav({ name }: { name: string }) {
       )}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
-        <Link
-          href="/"
-          className="font-display text-text hover:text-accent text-lg tracking-tight transition-colors sm:text-xl"
-        >
-          {name}
+        {/* Compact monogram logo — a home link that doesn't repeat the full
+            name already shown large in the hero. */}
+        <Link href="/" aria-label="Home" className="group">
+          <span className="font-display text-text grid h-9 w-9 place-items-center rounded-lg border border-[var(--hairline-strong)] text-sm tracking-tight transition-colors duration-300 group-hover:border-[var(--accent)] group-hover:text-[var(--accent)]">
+            {initials(name)}
+          </span>
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">

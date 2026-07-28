@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { isDirectVideo, safeUrl, toYouTubeEmbedUrl } from "@/lib/utils";
 import { FittedMedia } from "./FittedMedia";
+import { HeroParticles } from "./HeroParticles";
 
 type HeroProps = {
   name: string;
@@ -60,8 +61,10 @@ export function Hero({
         />
       </div>
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:px-12">
-        <div>
+      {/* Interactive particle constellation spanning the whole hero. */}
+      <HeroParticles />
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         {availability && (
           <motion.div {...rise(0)} className="mb-7">
             <span className="text-muted inline-flex items-center gap-2 rounded-full border border-[var(--hairline)] px-3.5 py-1.5 text-xs">
@@ -120,51 +123,6 @@ export function Hero({
               Download Résumé
             </a>
           )}
-        </motion.div>
-        </div>
-
-        {/* Animated colour orb — a slowly rotating spectrum with drifting
-            blobs, so the hero's right side is alive with moving colour. */}
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="relative hidden justify-self-center lg:block"
-          aria-hidden="true"
-        >
-          <div className="relative aspect-square w-[22rem] xl:w-[26rem]">
-            <div className="absolute inset-0 overflow-hidden rounded-full border border-white/10">
-              {/* Rotating colour wheel */}
-              <div
-                className="absolute inset-[-30%] opacity-80 blur-2xl motion-safe:animate-[orb-spin_24s_linear_infinite]"
-                style={{
-                  background:
-                    "conic-gradient(from 0deg, #e8833a, #e6b24a, #8fb84a, #2fb6ab, #4aa8d8, #ef6b52, #e8833a)",
-                  mixBlendMode: "screen",
-                }}
-              />
-              {/* Two drifting blobs for a lava-lamp shimmer */}
-              <div
-                className="absolute top-[12%] left-[10%] h-2/3 w-2/3 rounded-full blur-3xl motion-safe:animate-[blob-a_13s_ease-in-out_infinite]"
-                style={{
-                  background: "radial-gradient(circle, #2fb6ab, transparent 62%)",
-                  mixBlendMode: "screen",
-                }}
-              />
-              <div
-                className="absolute right-[8%] bottom-[10%] h-3/5 w-3/5 rounded-full blur-3xl motion-safe:animate-[blob-b_17s_ease-in-out_infinite]"
-                style={{
-                  background: "radial-gradient(circle, #ef6b52, transparent 62%)",
-                  mixBlendMode: "screen",
-                }}
-              />
-              {/* Inner depth so it reads as a glowing sphere */}
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{ boxShadow: "inset 0 0 90px rgba(0,0,0,0.6)" }}
-              />
-            </div>
-          </div>
         </motion.div>
       </div>
 

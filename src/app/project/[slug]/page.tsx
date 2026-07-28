@@ -29,7 +29,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
   return (
     <>
-      {profile && <SiteNav name={profile.name} />}
+      {profile && <SiteNav />}
 
       <main className="flex-1 pt-28 pb-16 sm:pt-32">
         <div className="mx-auto max-w-5xl px-5 sm:px-8">

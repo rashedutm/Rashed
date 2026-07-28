@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { cn, initials } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 const LINKS = [
   { href: "/#work", label: "Work" },
@@ -10,7 +10,7 @@ const LINKS = [
   { href: "/#experience", label: "Experience" },
 ];
 
-export function SiteNav({ name }: { name: string }) {
+export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -30,15 +30,9 @@ export function SiteNav({ name }: { name: string }) {
           : "border-b border-transparent",
       )}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
-        {/* Compact monogram logo — a home link that doesn't repeat the full
-            name already shown large in the hero. */}
-        <Link href="/" aria-label="Home" className="group">
-          <span className="font-display text-text grid h-9 w-9 place-items-center rounded-lg border border-[var(--hairline-strong)] text-sm tracking-tight transition-colors duration-300 group-hover:border-[var(--accent)] group-hover:text-[var(--accent)]">
-            {initials(name)}
-          </span>
-        </Link>
-
+      <nav className="mx-auto flex max-w-7xl items-center justify-end px-5 py-4 sm:px-8 lg:px-12">
+        {/* No brand on the left — the name already appears large in the hero,
+            so the nav is just navigation. */}
         <div className="hidden items-center gap-8 md:flex">
           {LINKS.map((link) => (
             <Link

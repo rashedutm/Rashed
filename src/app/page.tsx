@@ -52,7 +52,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <SiteNav name={profile.name} />
+      <SiteNav />
 
       <main className="flex-1">
         <Hero

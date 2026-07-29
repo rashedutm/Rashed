@@ -46,7 +46,7 @@ export function PosterCard({
     >
       <Link
         href={`/project/${project.slug}`}
-        className="bg-card flex h-full flex-col overflow-hidden rounded-[var(--radius)] border border-[color:var(--c)]/25 shadow-[0_10px_36px_-22px_var(--c-glow)] transition-[transform,box-shadow,border-color] duration-300 ease-out will-change-transform group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:border-[color:var(--c)]/70 group-hover:shadow-[0_22px_60px_-14px_var(--c-glow)] motion-reduce:transform-none motion-reduce:transition-none"
+        className="bg-card flex h-full flex-col overflow-hidden rounded-[var(--radius)] border border-[color:var(--c)]/25 shadow-[0_10px_36px_-22px_var(--c-glow)] transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-transform group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:border-[color:var(--c)]/70 group-hover:shadow-[0_22px_60px_-14px_var(--c-glow)] active:scale-[0.97] active:duration-100 motion-reduce:transform-none motion-reduce:transition-none"
       >
         <div className="relative aspect-[16/10] overflow-hidden">
           {thumb ? (

@@ -330,7 +330,7 @@ export function SubmitButton({
       type="submit"
       disabled={pending}
       className={cn(
-        "rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50",
+        "jelly rounded-full px-5 py-2.5 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50",
         variant === "primary" &&
           "bg-accent hover:bg-accent-hover text-[#1A0F06] hover:shadow-[0_10px_28px_-10px_var(--accent-glow)]",
         variant === "danger" &&

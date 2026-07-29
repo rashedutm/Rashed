@@ -50,6 +50,22 @@ export default async function HomePage() {
 
   if (!profile) return <EmptyState />;
 
+  // Round-robin across skill categories so the hero's floating chips show a
+  // varied mix (a language, a tool, an OS…) rather than eight of one kind.
+  const skillLists = skills.map((group) => group.items.map((item) => item.name));
+  const heroSkills: string[] = [];
+  for (let round = 0; heroSkills.length < 8; round++) {
+    let addedThisRound = false;
+    for (const list of skillLists) {
+      if (list[round]) {
+        heroSkills.push(list[round]);
+        addedThisRound = true;
+        if (heroSkills.length >= 8) break;
+      }
+    }
+    if (!addedThisRound) break;
+  }
+
   return (
     <>
       <SiteNav />
@@ -63,6 +79,7 @@ export default async function HomePage() {
           email={profile.email}
           resumeUrl={profile.resumeUrl}
           heroVideoUrl={profile.heroVideoUrl}
+          skills={heroSkills}
         />
 
         {shelves.length > 0 ? (

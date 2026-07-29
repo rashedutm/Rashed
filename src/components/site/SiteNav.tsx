@@ -47,7 +47,7 @@ export function SiteNav() {
               that's reachable from anywhere without scrolling (Fitts's Law). */}
           <Link
             href="/#contact"
-            className="bg-accent hover:bg-accent-hover rounded-full px-4 py-2 text-sm font-medium text-[#1A0F06] transition-all duration-300 hover:shadow-[0_8px_24px_-8px_var(--accent-glow)]"
+            className="jelly bg-accent hover:bg-accent-hover rounded-full px-4 py-2 text-sm font-medium text-[#1A0F06] hover:shadow-[0_8px_24px_-8px_var(--accent-glow)]"
           >
             Contact
           </Link>
@@ -96,7 +96,7 @@ export function SiteNav() {
             <Link
               href="/#contact"
               onClick={() => setOpen(false)}
-              className="bg-accent hover:bg-accent-hover mt-4 rounded-full px-4 py-2.5 text-center text-sm font-medium text-[#1A0F06] transition-colors"
+              className="jelly bg-accent hover:bg-accent-hover mt-4 rounded-full px-4 py-2.5 text-center text-sm font-medium text-[#1A0F06]"
             >
               Contact
             </Link>

@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { isDirectVideo, safeUrl, toYouTubeEmbedUrl } from "@/lib/utils";
 import { FittedMedia } from "./FittedMedia";
 import { HeroParticles } from "./HeroParticles";
+import { FloatingSkills } from "./FloatingSkills";
 
 type HeroProps = {
   name: string;
@@ -14,6 +15,7 @@ type HeroProps = {
   email?: string | null;
   resumeUrl?: string | null;
   heroVideoUrl?: string | null;
+  skills?: string[];
 };
 
 export function Hero({
@@ -24,6 +26,7 @@ export function Hero({
   email,
   resumeUrl,
   heroVideoUrl,
+  skills = [],
 }: HeroProps) {
   const reduceMotion = useReducedMotion();
   const resume = safeUrl(resumeUrl);
@@ -64,65 +67,75 @@ export function Hero({
       {/* Interactive particle constellation spanning the whole hero. */}
       <HeroParticles />
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-        {availability && (
-          <motion.div {...rise(0)} className="mb-7">
-            <span className="text-muted inline-flex items-center gap-2 rounded-full border border-[var(--hairline)] px-3.5 py-1.5 text-xs">
-              <span className="bg-accent relative flex h-1.5 w-1.5 rounded-full">
-                <span className="bg-accent absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 motion-reduce:hidden" />
+      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-8 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:px-12">
+        {/* Left — the text, aligned left with generous breathing room. */}
+        <div className="max-w-2xl">
+          {availability && (
+            <motion.div {...rise(0)} className="mb-7">
+              <span className="text-muted inline-flex items-center gap-2 rounded-full border border-[var(--hairline)] px-3.5 py-1.5 text-xs">
+                <span className="bg-accent relative flex h-1.5 w-1.5 rounded-full">
+                  <span className="bg-accent absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 motion-reduce:hidden" />
+                </span>
+                {availability}
               </span>
-              {availability}
-            </span>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
 
-        <motion.h1
-          {...rise(0.06)}
-          className="font-display text-gradient max-w-4xl text-[clamp(2rem,7vw,4.6rem)] leading-[1.05] text-balance"
-        >
-          {name}
-        </motion.h1>
-
-        <motion.p
-          {...rise(0.13)}
-          className="mt-5 max-w-2xl text-lg leading-snug sm:text-xl"
-        >
-          <span className="text-accent">{headline}</span>
-        </motion.p>
-
-        <motion.p
-          {...rise(0.19)}
-          className="text-muted mt-4 max-w-xl text-[15px] leading-relaxed text-balance"
-        >
-          {tagline}
-        </motion.p>
-
-        <motion.div {...rise(0.26)} className="mt-9 flex flex-wrap items-center gap-3">
-          <Link
-            href="#work"
-            className="bg-accent hover:bg-accent-hover rounded-full px-6 py-3 text-sm font-medium text-[#1A0F06] transition-all duration-300 hover:shadow-[0_10px_32px_-8px_var(--accent-glow)]"
+          <motion.h1
+            {...rise(0.06)}
+            className="font-display text-gradient text-[clamp(2rem,6vw,4.4rem)] leading-[1.05] text-balance"
           >
-            View Work
-          </Link>
-          {email && (
-            <a
-              href={`mailto:${email}`}
-              className="rounded-full border px-6 py-3 text-sm font-medium transition-all duration-300"
-              style={{ borderColor: "var(--accent-2)", color: "var(--accent-2)" }}
+            {name}
+          </motion.h1>
+
+          <motion.p {...rise(0.13)} className="mt-5 text-lg leading-snug sm:text-xl">
+            <span className="text-accent">{headline}</span>
+          </motion.p>
+
+          <motion.p
+            {...rise(0.19)}
+            className="text-muted mt-4 max-w-xl text-[15px] leading-relaxed text-balance"
+          >
+            {tagline}
+          </motion.p>
+
+          <motion.div {...rise(0.26)} className="mt-9 flex flex-wrap items-center gap-3">
+            <Link
+              href="#work"
+              className="jelly bg-accent hover:bg-accent-hover rounded-full px-6 py-3 text-sm font-medium text-[#1A0F06] hover:shadow-[0_10px_32px_-8px_var(--accent-glow)]"
             >
-              Get in touch
-            </a>
-          )}
-          {resume && (
-            <a
-              href={resume}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted hover:text-text rounded-full border border-[var(--hairline-strong)] px-6 py-3 text-sm font-medium transition-colors duration-300 hover:border-[var(--text)]/30"
-            >
-              Download Résumé
-            </a>
-          )}
+              View Work
+            </Link>
+            {email && (
+              <a
+                href={`mailto:${email}`}
+                className="jelly rounded-full border px-6 py-3 text-sm font-medium"
+                style={{ borderColor: "var(--accent-2)", color: "var(--accent-2)" }}
+              >
+                Get in touch
+              </a>
+            )}
+            {resume && (
+              <a
+                href={resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="jelly text-muted hover:text-text rounded-full border border-[var(--hairline-strong)] px-6 py-3 text-sm font-medium hover:border-[var(--text)]/30"
+              >
+                Download Résumé
+              </a>
+            )}
+          </motion.div>
+        </div>
+
+        {/* Right — floating skill chips, the animated element. */}
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className="relative hidden h-[26rem] lg:block"
+        >
+          <FloatingSkills skills={skills} />
         </motion.div>
       </div>
 

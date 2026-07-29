@@ -142,9 +142,43 @@ body {
   animation: aurora-drift 14s ease-in-out infinite;
 }
 
+/* Gentle vertical bob for the floating hero chips. */
+@keyframes float-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Jelly press feedback — every button/card that carries `.jelly` squishes on
+   press and springs back with a slight overshoot, so a tap always feels felt.
+   The overshoot easing (>1) is what gives the bouncy, tactile quality.
+--------------------------------------------------------------------------- */
+.jelly {
+  transition:
+    transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 240ms ease,
+    border-color 240ms ease,
+    color 240ms ease,
+    box-shadow 240ms ease;
+}
+.jelly:active {
+  transform: scale(0.92);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .aurora-animate {
     animation: none;
+  }
+  .jelly {
+    transition-duration: 1ms;
+  }
+  .jelly:active {
+    transform: none;
   }
 }
 

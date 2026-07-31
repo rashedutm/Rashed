@@ -3,7 +3,7 @@
 import type { Skill } from "@prisma/client";
 import { deleteSkill, saveSkill } from "@/actions/skills";
 import { AddPanel, EditRow } from "./CrudShell";
-import { TextField } from "./Fields";
+import { CheckboxField, TextField } from "./Fields";
 
 function SkillFields({
   errors,
@@ -43,6 +43,12 @@ function SkillFields({
         error={errors.sortOrder}
         hint="Lower numbers come first. Categories are ordered by their lowest sort order."
       />
+      <CheckboxField
+        label="Show as a floating chip in the hero"
+        name="heroHighlight"
+        defaultChecked={skill?.heroHighlight}
+        hint="The hero shows up to 8 of these, by sort order."
+      />
     </>
   );
 }
@@ -75,7 +81,7 @@ export function SkillsManager({ skills }: { skills: Skill[] }) {
                   <EditRow
                     key={skill.id}
                     title={skill.name}
-                    subtitle={`Sort order ${skill.sortOrder}`}
+                    subtitle={`Sort order ${skill.sortOrder}${skill.heroHighlight ? " · In hero" : ""}`}
                     saveAction={saveSkill}
                     deleteAction={deleteSkill}
                     deleteId={skill.id}

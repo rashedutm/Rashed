@@ -69,6 +69,18 @@ async function seedSkills() {
     "Spoken Languages": ["English", "Bengali", "Hindi", "Urdu"],
   };
 
+  // A starter set of hero chips so a fresh install shows a varied cluster.
+  const heroChips = new Set([
+    "C++",
+    "JavaScript",
+    "UiPath",
+    "Git",
+    "GitHub Actions",
+    "Linux (Kali)",
+    "Linux (Ubuntu)",
+    "English",
+  ]);
+
   let categoryIndex = 0;
   for (const [category, names] of Object.entries(groups)) {
     await prisma.skill.createMany({
@@ -77,6 +89,7 @@ async function seedSkills() {
         name,
         // Keep categories in a stable display order too.
         sortOrder: categoryIndex * 100 + i,
+        heroHighlight: heroChips.has(name),
       })),
     });
     categoryIndex++;

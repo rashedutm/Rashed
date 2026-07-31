@@ -27,6 +27,38 @@ export async function getSkillsByCategory() {
   return [...grouped.entries()].map(([category, items]) => ({ category, items }));
 }
 
+/**
+ * Skills the admin has flagged to float as chips in the hero. Falls back to a
+ * varied round-robin across all skills when nothing is flagged yet, so the hero
+ * is never empty.
+ */
+export async function getHeroSkills(limit = 8): Promise<string[]> {
+  const flagged = await prisma.skill.findMany({
+    where: { heroHighlight: true },
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
+    take: limit,
+    select: { name: true },
+  });
+  if (flagged.length > 0) return flagged.map((s) => s.name);
+
+  // Fallback: one skill from each category in turn, for variety.
+  const groups = await getSkillsByCategory();
+  const lists = groups.map((g) => g.items.map((i) => i.name));
+  const out: string[] = [];
+  for (let round = 0; out.length < limit; round++) {
+    let added = false;
+    for (const list of lists) {
+      if (list[round]) {
+        out.push(list[round]);
+        added = true;
+        if (out.length >= limit) break;
+      }
+    }
+    if (!added) break;
+  }
+  return out;
+}
+
 export function getExperience() {
   return prisma.experience.findMany({
     orderBy: [{ sortOrder: "asc" }, { id: "asc" }],

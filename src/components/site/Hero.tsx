@@ -13,10 +13,18 @@ type HeroProps = {
   headline: string;
   tagline: string;
   availability?: string | null;
+  availabilitySize?: string | null;
   email?: string | null;
   resumeUrl?: string | null;
   heroVideoUrl?: string | null;
   skills?: string[];
+};
+
+// Font/padding presets for the availability badge, chosen from the admin panel.
+const BADGE_SIZE: Record<string, string> = {
+  sm: "px-3.5 py-1.5 text-xs",
+  md: "px-4 py-2 text-sm",
+  lg: "px-5 py-2.5 text-base",
 };
 
 export function Hero({
@@ -24,6 +32,7 @@ export function Hero({
   headline,
   tagline,
   availability,
+  availabilitySize,
   email,
   resumeUrl,
   heroVideoUrl,
@@ -33,6 +42,7 @@ export function Hero({
   const resume = safeUrl(resumeUrl);
   const video = safeUrl(heroVideoUrl);
   const youtube = video ? toYouTubeEmbedUrl(video) : null;
+  const badgeSize = BADGE_SIZE[availabilitySize ?? "md"] ?? BADGE_SIZE.md;
 
   const rise = (delay: number) => ({
     initial: reduceMotion ? false : { opacity: 0, y: 18 },
@@ -73,9 +83,15 @@ export function Hero({
         <div className="max-w-2xl">
           {availability && (
             <motion.div {...rise(0)} className="mb-7">
-              <span className="text-muted inline-flex items-center gap-2 rounded-full border border-[var(--hairline)] px-3.5 py-1.5 text-xs">
-                <span className="bg-accent relative flex h-1.5 w-1.5 rounded-full">
-                  <span className="bg-accent absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 motion-reduce:hidden" />
+              <span
+                className={`badge-beat text-accent inline-flex origin-left items-center gap-2 rounded-full border font-medium ${badgeSize}`}
+                style={{
+                  borderColor: "color-mix(in srgb, var(--accent) 55%, transparent)",
+                  backgroundColor: "rgba(232, 131, 58, 0.12)",
+                }}
+              >
+                <span className="bg-accent relative flex h-2 w-2 rounded-full">
+                  <span className="bg-accent absolute inline-flex h-full w-full animate-ping rounded-full opacity-70 motion-reduce:hidden" />
                 </span>
                 {availability}
               </span>

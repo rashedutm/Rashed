@@ -40,6 +40,8 @@ model Profile {
   resumeUrl       String?  @db.VarChar(500)
   heroVideoUrl    String?  @db.VarChar(500)
   availability    String?  @db.VarChar(255)
+  /// Font size for the availability badge: "sm" | "md" | "lg".
+  availabilitySize String  @default("md") @db.VarChar(8)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -49,10 +51,13 @@ model Skill {
   category  String   @db.VarChar(191)
   name      String   @db.VarChar(191)
   sortOrder Int      @default(0)
+  /// When true, this skill appears as a floating chip in the hero.
+  heroHighlight Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([category, sortOrder])
+  @@index([heroHighlight])
 }
 
 model Experience {

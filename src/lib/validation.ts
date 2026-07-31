@@ -59,12 +59,14 @@ export const profileSchema = z.object({
   resumeUrl: optionalUrl(),
   heroVideoUrl: optionalUrl(),
   availability: optionalText(255),
+  availabilitySize: z.enum(["sm", "md", "lg"]).default("md"),
 });
 
 export const skillSchema = z.object({
   category: requiredText(191, "Category"),
   name: requiredText(191, "Skill name"),
   sortOrder,
+  heroHighlight: checkbox,
 });
 
 export const experienceSchema = z.object({

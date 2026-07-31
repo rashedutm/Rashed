@@ -15,6 +15,7 @@ import {
   getAwards,
   getEducation,
   getExperience,
+  getHeroSkills,
   getProfile,
   getProjectShelves,
   getSkillsByCategory,
@@ -41,32 +42,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [profile, shelves, skills, experience, awards, education] = await Promise.all([
+  const [profile, shelves, skills, heroSkills, experience, awards, education] = await Promise.all([
     getProfile(),
     getProjectShelves(),
     getSkillsByCategory(),
+    getHeroSkills(),
     getExperience(),
     getAwards(),
     getEducation(),
   ]);
 
   if (!profile) return <EmptyState />;
-
-  // Round-robin across skill categories so the hero's floating chips show a
-  // varied mix (a language, a tool, an OS…) rather than eight of one kind.
-  const skillLists = skills.map((group) => group.items.map((item) => item.name));
-  const heroSkills: string[] = [];
-  for (let round = 0; heroSkills.length < 8; round++) {
-    let addedThisRound = false;
-    for (const list of skillLists) {
-      if (list[round]) {
-        heroSkills.push(list[round]);
-        addedThisRound = true;
-        if (heroSkills.length >= 8) break;
-      }
-    }
-    if (!addedThisRound) break;
-  }
 
   return (
     <>
@@ -78,6 +64,7 @@ export default async function HomePage() {
           headline={profile.headline}
           tagline={profile.tagline}
           availability={profile.availability}
+          availabilitySize={profile.availabilitySize}
           email={profile.email}
           resumeUrl={profile.resumeUrl}
           heroVideoUrl={profile.heroVideoUrl}

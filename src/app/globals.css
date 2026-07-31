@@ -153,6 +153,28 @@ body {
   }
 }
 
+/* Heartbeat for the availability badge — the whole pill swells and its glow
+   pulses, so it keeps drawing the eye. */
+@keyframes badge-beat {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--accent-glow);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 26px 2px var(--accent-glow);
+  }
+}
+.badge-beat {
+  animation: badge-beat 1.8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .badge-beat {
+    animation: none;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Jelly press feedback — every button/card that carries `.jelly` squishes on
    press and springs back with a slight overshoot, so a tap always feels felt.

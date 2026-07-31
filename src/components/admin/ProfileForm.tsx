@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import type { Profile } from "@prisma/client";
 import { saveProfile } from "@/actions/profile";
 import { idle } from "@/lib/action-state";
-import { FormMessage, SubmitButton, TextArea, TextField } from "./Fields";
+import { FormMessage, SelectField, SubmitButton, TextArea, TextField } from "./Fields";
 
 export function ProfileForm({ profile }: { profile: Profile | null }) {
   const [state, formAction] = useActionState(saveProfile, idle);
@@ -44,7 +44,19 @@ export function ProfileForm({ profile }: { profile: Profile | null }) {
           name="availability"
           defaultValue={profile?.availability}
           error={err.availability}
-          hint="Shown as the pill above your name. Leave blank to hide it."
+          hint="Shown as the pulsing pill above your name. Leave blank to hide it."
+        />
+        <SelectField
+          label="Availability badge size"
+          name="availabilitySize"
+          defaultValue={profile?.availabilitySize ?? "md"}
+          error={err.availabilitySize}
+          hint="How large the availability pill appears."
+          options={[
+            { value: "sm", label: "Small" },
+            { value: "md", label: "Medium" },
+            { value: "lg", label: "Large" },
+          ]}
         />
       </fieldset>
 

@@ -1,7 +1,15 @@
-import type { Award, Education, Experience, ExperienceBullet, Profile } from "@prisma/client";
+import type {
+  Award,
+  Education,
+  Experience,
+  ExperienceBullet,
+  Profile,
+  SocialLink,
+} from "@prisma/client";
 import { Section } from "./Section";
 import { FittedMedia } from "./FittedMedia";
 import { formatDateRange, initials, safeUrl } from "@/lib/utils";
+import { BrandIcon, getPlatform, socialHref } from "@/lib/socials";
 
 export function About({ profile }: { profile: Profile }) {
   const image = safeUrl(profile.profileImageUrl);
@@ -165,9 +173,16 @@ export function EducationList({ items }: { items: Education[] }) {
   );
 }
 
-export function SiteFooter({ profile }: { profile: Profile }) {
-  const github = safeUrl(profile.githubUrl);
-  const linkedin = safeUrl(profile.linkedinUrl);
+export function SiteFooter({
+  profile,
+  socials = [],
+}: {
+  profile: Profile;
+  socials?: SocialLink[];
+}) {
+  const links = socials
+    .map((s) => ({ ...s, href: socialHref(s.platform, s.url) }))
+    .filter((s) => s.href);
 
   return (
     <footer id="contact" className="mt-8 scroll-mt-24 border-t border-[var(--hairline)]">
@@ -199,8 +214,11 @@ export function SiteFooter({ profile }: { profile: Profile }) {
           <FooterItem label="Email">
             <a
               href={`mailto:${profile.email}`}
-              className="hover:text-accent break-all transition-colors"
+              className="hover:text-accent flex items-center gap-2 break-all transition-colors"
             >
+              <span className="text-accent text-base">
+                <BrandIcon platform="email" />
+              </span>
               {profile.email}
             </a>
           </FooterItem>
@@ -208,36 +226,36 @@ export function SiteFooter({ profile }: { profile: Profile }) {
           <FooterItem label="Phone">
             <a
               href={`tel:${profile.phone.replace(/[^\d+]/g, "")}`}
-              className="hover:text-accent transition-colors"
+              className="hover:text-accent flex items-center gap-2 transition-colors"
             >
+              <span className="text-accent text-base">
+                <BrandIcon platform="phone" />
+              </span>
               {profile.phone}
             </a>
           </FooterItem>
 
           <FooterItem label="Elsewhere">
-            <div className="flex flex-col gap-1">
-              {github && (
-                <a
-                  href={github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-accent transition-colors"
-                >
-                  GitHub
-                </a>
-              )}
-              {linkedin && (
-                <a
-                  href={linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-accent transition-colors"
-                >
-                  LinkedIn
-                </a>
-              )}
-              {!github && !linkedin && <span className="text-muted">—</span>}
-            </div>
+            {links.length > 0 ? (
+              <div className="flex flex-col gap-2">
+                {links.map((link) => (
+                  <a
+                    key={link.id}
+                    href={link.href as string}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-accent flex items-center gap-2 transition-colors"
+                  >
+                    <span className="text-accent text-base">
+                      <BrandIcon platform={link.platform} />
+                    </span>
+                    {link.label || getPlatform(link.platform).label}
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <span className="text-muted">—</span>
+            )}
           </FooterItem>
 
           <FooterItem label="Location">{profile.location}</FooterItem>

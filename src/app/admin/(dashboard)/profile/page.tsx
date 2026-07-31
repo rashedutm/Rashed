@@ -13,7 +13,10 @@ export default async function AdminProfilePage() {
         title="Profile / About"
         description="Drives the hero, the About section and the footer. There is only ever one profile record."
       />
-      <ProfileForm profile={profile} />
+      {/* Key by updatedAt so the form remounts with fresh values after a save
+          (React 19 resets uncontrolled inputs to their defaultValue on submit,
+          which otherwise made the size dropdown snap back). */}
+      <ProfileForm key={profile?.updatedAt?.toISOString() ?? "new"} profile={profile} />
     </div>
   );
 }

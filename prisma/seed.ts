@@ -34,6 +34,7 @@ async function wipeContent() {
   await prisma.skill.deleteMany();
   await prisma.award.deleteMany();
   await prisma.education.deleteMany();
+  await prisma.socialLink.deleteMany();
   await prisma.profile.deleteMany();
 }
 
@@ -411,6 +412,13 @@ async function seedEducation() {
   console.log("✓ education");
 }
 
+async function seedSocials() {
+  await prisma.socialLink.createMany({
+    data: [{ platform: "github", url: "https://github.com/rashedutm", sortOrder: 0 }],
+  });
+  console.log("✓ socials");
+}
+
 async function main() {
   await seedAdmin();
 
@@ -432,6 +440,7 @@ async function main() {
   await seedProjects();
   await seedAwards();
   await seedEducation();
+  await seedSocials();
 
   console.log("\nSeed complete. Log in at /admin/login");
   console.log(`  username: ${ADMIN_USERNAME}`);

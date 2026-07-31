@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ProjectDetail } from "@/components/site/ProjectDetail";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/Sections";
-import { getProfile, getProjectBySlug } from "@/lib/data";
+import { getProfile, getProjectBySlug, getSocialLinks } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +23,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
-  const [project, profile] = await Promise.all([getProjectBySlug(slug), getProfile()]);
+  const [project, profile, socials] = await Promise.all([
+    getProjectBySlug(slug),
+    getProfile(),
+    getSocialLinks(),
+  ]);
 
   if (!project) notFound();
 
@@ -53,7 +57,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <ProjectDetail project={project} />
       </main>
 
-      {profile && <SiteFooter profile={profile} />}
+      {profile && <SiteFooter profile={profile} socials={socials} />}
     </>
   );
 }

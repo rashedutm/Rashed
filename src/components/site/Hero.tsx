@@ -21,10 +21,12 @@ type HeroProps = {
 };
 
 // Font/padding presets for the availability badge, chosen from the admin panel.
+// All start compact on phones and only grow to the chosen size at `sm` and up,
+// so the badge never gets oversized on mobile.
 const BADGE_SIZE: Record<string, string> = {
-  sm: "px-3.5 py-1.5 text-xs",
-  md: "px-4 py-2 text-sm",
-  lg: "px-5 py-2.5 text-base",
+  sm: "px-3 py-1 text-[11px]",
+  md: "px-3 py-1 text-[11px] sm:px-4 sm:py-2 sm:text-sm",
+  lg: "px-3 py-1 text-[11px] sm:px-5 sm:py-2.5 sm:text-base",
 };
 
 export function Hero({
@@ -81,23 +83,6 @@ export function Hero({
       <div className="relative mx-auto grid w-full max-w-7xl items-center gap-8 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:px-12">
         {/* Left — the text, aligned left with generous breathing room. */}
         <div className="max-w-2xl">
-          {availability && (
-            <motion.div {...rise(0)} className="mb-7">
-              <span
-                className={`badge-beat text-accent inline-flex origin-left items-center gap-2 rounded-full border font-medium ${badgeSize}`}
-                style={{
-                  borderColor: "color-mix(in srgb, var(--accent) 55%, transparent)",
-                  backgroundColor: "rgba(232, 131, 58, 0.12)",
-                }}
-              >
-                <span className="bg-accent relative flex h-2 w-2 rounded-full">
-                  <span className="bg-accent absolute inline-flex h-full w-full animate-ping rounded-full opacity-70 motion-reduce:hidden" />
-                </span>
-                {availability}
-              </span>
-            </motion.div>
-          )}
-
           <motion.h1
             {...rise(0.06)}
             className="font-display text-gradient text-[clamp(2rem,6vw,4.4rem)] leading-[1.05] text-balance"
@@ -116,7 +101,24 @@ export function Hero({
             {tagline}
           </motion.p>
 
-          <motion.div {...rise(0.26)} className="mt-9 flex flex-wrap items-center gap-3">
+          {availability && (
+            <motion.div {...rise(0.24)} className="mt-6">
+              <span
+                className={`badge-beat text-accent inline-flex origin-left items-center gap-2 rounded-full border font-medium ${badgeSize}`}
+                style={{
+                  borderColor: "color-mix(in srgb, var(--accent) 55%, transparent)",
+                  backgroundColor: "rgba(232, 131, 58, 0.12)",
+                }}
+              >
+                <span className="bg-accent relative flex h-2 w-2 rounded-full">
+                  <span className="bg-accent absolute inline-flex h-full w-full animate-ping rounded-full opacity-70 motion-reduce:hidden" />
+                </span>
+                {availability}
+              </span>
+            </motion.div>
+          )}
+
+          <motion.div {...rise(0.3)} className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               href="#work"
               onClick={(e) => scrollToHash(e, "#work")}

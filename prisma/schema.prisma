@@ -176,3 +176,18 @@ model Education {
 
   @@index([sortOrder])
 }
+
+/// Admin-managed contact / social links shown in the footer, each rendered with
+/// its platform's logo. `platform` is a known key (github, linkedin, x, …) that
+/// picks the icon and a default label.
+model SocialLink {
+  id        Int      @id @default(autoincrement())
+  platform  String   @db.VarChar(32)
+  label     String?  @db.VarChar(191)
+  url       String   @db.VarChar(500)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sortOrder])
+}

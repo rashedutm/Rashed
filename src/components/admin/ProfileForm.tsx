@@ -108,21 +108,11 @@ export function ProfileForm({ profile }: { profile: Profile | null }) {
           defaultValue={profile?.location}
           error={err.location}
         />
-        <TextField
-          label="GitHub URL"
-          name="githubUrl"
-          type="url"
-          defaultValue={profile?.githubUrl}
-          error={err.githubUrl}
-          hint="Full URL, e.g. https://github.com/username"
-        />
-        <TextField
-          label="LinkedIn URL"
-          name="linkedinUrl"
-          type="url"
-          defaultValue={profile?.linkedinUrl}
-          error={err.linkedinUrl}
-        />
+        <p className="text-muted text-[12px] leading-relaxed">
+          GitHub, LinkedIn, a personal site and other links are managed under{" "}
+          <span className="text-accent">Contact &amp; Socials</span> — each shows its logo in the
+          footer.
+        </p>
       </fieldset>
 
       <fieldset className="space-y-5">

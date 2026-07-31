@@ -108,6 +108,12 @@ export const getEducation = unstable_cache(
   cacheOpts,
 );
 
+export const getSocialLinks = unstable_cache(
+  () => prisma.socialLink.findMany({ orderBy: [{ sortOrder: "asc" }, { id: "asc" }] }),
+  ["socialLinks"],
+  cacheOpts,
+);
+
 // Internal, uncached — only used to compose the cached shelves below.
 function fetchPublishedProjects() {
   return prisma.project.findMany({

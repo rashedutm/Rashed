@@ -20,8 +20,6 @@ export async function saveProfile(_prev: ActionState, formData: FormData): Promi
 
     const data = {
       ...parsed.data,
-      githubUrl: parsed.data.githubUrl ?? null,
-      linkedinUrl: parsed.data.linkedinUrl ?? null,
       profileImageUrl: parsed.data.profileImageUrl ?? null,
       resumeUrl: parsed.data.resumeUrl ?? null,
       heroVideoUrl: parsed.data.heroVideoUrl ?? null,

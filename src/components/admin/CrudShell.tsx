@@ -50,6 +50,7 @@ export function AddPanel({
 export function EditRow({
   title,
   subtitle,
+  icon,
   saveAction,
   deleteAction,
   deleteId,
@@ -57,6 +58,7 @@ export function EditRow({
 }: {
   title: string;
   subtitle?: string;
+  icon?: ReactNode;
   saveAction: (prev: ActionState, formData: FormData) => Promise<ActionState>;
   deleteAction: (prev: ActionState, formData: FormData) => Promise<ActionState>;
   deleteId: number;
@@ -72,10 +74,15 @@ export function EditRow({
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          className="min-w-0 flex-1 text-left"
+          className="flex min-w-0 flex-1 items-center gap-3 text-left"
         >
-          <p className="truncate text-[14px] font-medium">{title}</p>
-          {subtitle && <p className="text-muted mt-0.5 truncate text-[12px]">{subtitle}</p>}
+          {icon && <span className="shrink-0">{icon}</span>}
+          <span className="min-w-0">
+            <span className="block truncate text-[14px] font-medium">{title}</span>
+            {subtitle && (
+              <span className="text-muted mt-0.5 block truncate text-[12px]">{subtitle}</span>
+            )}
+          </span>
         </button>
 
         <div className="flex shrink-0 items-center gap-2">

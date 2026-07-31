@@ -53,8 +53,7 @@ export const profileSchema = z.object({
   email: z.string().trim().max(191).pipe(z.email("Enter a valid email address")),
   phone: requiredText(64, "Phone"),
   location: requiredText(191, "Location"),
-  githubUrl: optionalUrl(),
-  linkedinUrl: optionalUrl(),
+  // GitHub / LinkedIn and other links now live in the SocialLink table.
   profileImageUrl: optionalUrl(),
   resumeUrl: optionalUrl(),
   heroVideoUrl: optionalUrl(),
@@ -110,6 +109,15 @@ export const projectSchema = z.object({
       }),
     )
     .default([]),
+});
+
+export const socialLinkSchema = z.object({
+  platform: requiredText(32, "Platform"),
+  label: optionalText(191),
+  // Not URL-validated here because email/phone values aren't URLs; the display
+  // layer (socialHref) only ever emits http(s)/mailto/tel, so this is safe.
+  url: requiredText(500, "Link or value"),
+  sortOrder,
 });
 
 export const awardSchema = z.object({

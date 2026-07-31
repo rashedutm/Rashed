@@ -19,6 +19,7 @@ import {
   getProfile,
   getProjectShelves,
   getSkillsByCategory,
+  getSocialLinks,
 } from "@/lib/data";
 
 // Always render from the database, so admin edits appear without a redeploy.
@@ -42,15 +43,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [profile, shelves, skills, heroSkills, experience, awards, education] = await Promise.all([
-    getProfile(),
-    getProjectShelves(),
-    getSkillsByCategory(),
-    getHeroSkills(),
-    getExperience(),
-    getAwards(),
-    getEducation(),
-  ]);
+  const [profile, shelves, skills, heroSkills, experience, awards, education, socials] =
+    await Promise.all([
+      getProfile(),
+      getProjectShelves(),
+      getSkillsByCategory(),
+      getHeroSkills(),
+      getExperience(),
+      getAwards(),
+      getEducation(),
+      getSocialLinks(),
+    ]);
 
   if (!profile) return <EmptyState />;
 
@@ -86,7 +89,7 @@ export default async function HomePage() {
         <EducationList items={education} />
       </main>
 
-      <SiteFooter profile={profile} />
+      <SiteFooter profile={profile} socials={socials} />
     </>
   );
 }

@@ -66,7 +66,8 @@ export const skillSchema = z.object({
   category: requiredText(191, "Category"),
   name: requiredText(191, "Skill name"),
   sortOrder,
-  heroHighlight: checkbox,
+  // heroHighlight is intentionally not here — it's managed only by the bulk
+  // "Hero chips" panel (updateHeroSkills), so editing a skill never changes it.
 });
 
 export const experienceSchema = z.object({

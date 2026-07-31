@@ -33,6 +33,41 @@ export async function saveSkill(_prev: ActionState, formData: FormData): Promise
   }
 }
 
+/**
+ * Bulk-sets which skills appear as hero chips in one save: every checked id is
+ * flagged, everything else is cleared. Lets the admin toggle the whole set and
+ * save once, instead of editing skills one at a time.
+ */
+export async function updateHeroSkills(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  try {
+    await requireAdmin();
+
+    const ids = formData
+      .getAll("heroSkillIds")
+      .map((v) => Number(v))
+      .filter((n) => Number.isInteger(n) && n > 0);
+
+    const ops = [prisma.skill.updateMany({ data: { heroHighlight: false } })];
+    if (ids.length > 0) {
+      ops.push(
+        prisma.skill.updateMany({
+          where: { id: { in: ids } },
+          data: { heroHighlight: true },
+        }),
+      );
+    }
+    await prisma.$transaction(ops);
+
+    revalidatePublic();
+    return success(`Hero chips saved — ${ids.length} selected.`);
+  } catch (error) {
+    return toActionError(error, "Could not update the hero chips.");
+  }
+}
+
 export async function deleteSkill(_prev: ActionState, formData: FormData): Promise<ActionState> {
   try {
     await requireAdmin();

@@ -25,10 +25,12 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
-  if (!profile) return { title: "Portfolio" };
+  if (!profile) return { title: { absolute: "Rashed" } };
 
   return {
-    title: `${profile.name} — ${profile.headline}`,
+    // Tab title stays "Rashed"; the full name/headline is only used for the
+    // richer social-share preview.
+    title: { absolute: "Rashed" },
     description: profile.tagline,
     openGraph: {
       title: `${profile.name} — ${profile.headline}`,

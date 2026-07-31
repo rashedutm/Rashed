@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { isDirectVideo, safeUrl, toYouTubeEmbedUrl } from "@/lib/utils";
+import { scrollToHash } from "@/lib/scroll";
 import { FittedMedia } from "./FittedMedia";
 import { HeroParticles } from "./HeroParticles";
 import { FloatingSkills } from "./FloatingSkills";
@@ -102,6 +103,7 @@ export function Hero({
           <motion.div {...rise(0.26)} className="mt-9 flex flex-wrap items-center gap-3">
             <Link
               href="#work"
+              onClick={(e) => scrollToHash(e, "#work")}
               className="jelly bg-accent hover:bg-accent-hover rounded-full px-6 py-3 text-sm font-medium text-[#1A0F06] hover:shadow-[0_10px_32px_-8px_var(--accent-glow)]"
             >
               View Work
@@ -143,6 +145,7 @@ export function Hero({
       <motion.a
         href="#work"
         aria-label="Scroll to work"
+        onClick={(e) => scrollToHash(e, "#work")}
         initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.6 }}

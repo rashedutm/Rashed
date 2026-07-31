@@ -17,7 +17,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio",
+  // Brand always appears in the tab. Home is just "Rashed"; other pages read
+  // "<page> · Rashed".
+  title: {
+    default: "Rashed",
+    template: "%s · Rashed",
+  },
   description: "Personal portfolio",
 };
 

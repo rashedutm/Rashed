@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { scrollToHash } from "@/lib/scroll";
 
 const LINKS = [
   { href: "/#work", label: "Work" },
@@ -38,6 +39,7 @@ export function SiteNav() {
             <Link
               key={link.href}
               href={link.href}
+              onClick={(e) => scrollToHash(e, link.href)}
               className="text-muted hover:text-text relative text-sm transition-colors duration-300"
             >
               {link.label}
@@ -47,6 +49,7 @@ export function SiteNav() {
               that's reachable from anywhere without scrolling (Fitts's Law). */}
           <Link
             href="/#contact"
+            onClick={(e) => scrollToHash(e, "/#contact")}
             className="jelly bg-accent hover:bg-accent-hover rounded-full px-4 py-2 text-sm font-medium text-[#1A0F06] hover:shadow-[0_8px_24px_-8px_var(--accent-glow)]"
           >
             Contact
@@ -87,7 +90,10 @@ export function SiteNav() {
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  scrollToHash(e, link.href);
+                  setOpen(false);
+                }}
                 className="text-muted hover:text-text border-b border-[var(--hairline)] py-3 text-sm transition-colors"
               >
                 {link.label}
@@ -95,7 +101,10 @@ export function SiteNav() {
             ))}
             <Link
               href="/#contact"
-              onClick={() => setOpen(false)}
+              onClick={(e) => {
+                scrollToHash(e, "/#contact");
+                setOpen(false);
+              }}
               className="jelly bg-accent hover:bg-accent-hover mt-4 rounded-full px-4 py-2.5 text-center text-sm font-medium text-[#1A0F06]"
             >
               Contact

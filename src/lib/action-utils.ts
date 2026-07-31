@@ -1,8 +1,9 @@
 import "server-only";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
 import type { ActionState } from "./action-state";
+import { SITE_TAG } from "./data";
 
 export type { ActionState };
 
@@ -51,6 +52,9 @@ export function toActionError(error: unknown, fallback: string): ActionState {
 
 /** Refreshes every public surface that could be showing the changed content. */
 export function revalidatePublic() {
+  // Bust the cached DB reads (data.ts) and re-render the public routes.
+  // updateTag is the Server-Action-scoped tag invalidation in Next 16.
+  updateTag(SITE_TAG);
   revalidatePath("/", "layout");
 }
 

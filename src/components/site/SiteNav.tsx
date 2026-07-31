@@ -27,7 +27,7 @@ export function SiteNav() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "bg-base/70 border-b border-[var(--hairline)] backdrop-blur-xl"
+          ? "bg-base/90 border-b border-[var(--hairline)] backdrop-blur-md"
           : "border-b border-transparent",
       )}
     >

@@ -49,7 +49,7 @@ export function WorkSection({ shelves }: { shelves: ShelfData[] }) {
       </div>
 
       {/* Sticky filter bar — always within reach while scrolling the section. */}
-      <div className="bg-base/70 sticky top-[57px] z-30 border-y border-[var(--hairline)] backdrop-blur-xl">
+      <div className="bg-base/90 sticky top-[57px] z-30 border-y border-[var(--hairline)] backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <div
             role="tablist"

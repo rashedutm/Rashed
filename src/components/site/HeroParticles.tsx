@@ -17,11 +17,15 @@ type Particle = {
 };
 
 /**
- * An interactive particle constellation, in the spirit of ReactBits' animated
- * backgrounds but hand-written in plain canvas (no dependency). Glowing dots
- * drift across the hero, link to their neighbours with faint lines, and gently
- * push away from the cursor. Falls back to a single static frame when the
- * visitor prefers reduced motion.
+ * An interactive particle constellation, hand-written in plain canvas.
+ *
+ * Performance notes (this runs on phones):
+ *  - The animation loop is paused whenever the hero is scrolled out of view or
+ *    the tab is hidden, so it never costs anything while reading the rest of
+ *    the page.
+ *  - Glowing dots are drawn from pre-rendered radial sprites instead of the
+ *    per-dot canvas `shadowBlur`, which is very expensive on mobile GPUs.
+ *  - Particle count and pixel ratio are scaled down on small screens.
  */
 export function HeroParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -33,23 +37,47 @@ export function HeroParticles() {
     if (!canvas || !parent || !ctx) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const isSmall = window.matchMedia("(max-width: 768px)").matches;
+    // Cheaper on phones: fewer device pixels to fill.
+    const dpr = Math.min(window.devicePixelRatio || 1, isSmall ? 1.5 : 2);
 
     let width = 0;
     let height = 0;
     let particles: Particle[] = [];
     let raf = 0;
+    let running = false;
+    let visible = true; // hero on screen
     const pointer = { x: -9999, y: -9999, active: false };
-    const LINK_DIST = 132;
+    const LINK_DIST = isSmall ? 108 : 132;
 
     const rnd = (min: number, max: number) => Math.random() * (max - min) + min;
+
+    // Pre-render one soft glowing dot per colour, so drawing is a cheap
+    // drawImage instead of a live shadow blur.
+    const SPRITE = 28;
+    const sprites = new Map<string, HTMLCanvasElement>();
+    const spriteFor = (color: string) => {
+      const cached = sprites.get(color);
+      if (cached) return cached;
+      const s = document.createElement("canvas");
+      s.width = s.height = SPRITE;
+      const g = s.getContext("2d")!;
+      const grad = g.createRadialGradient(SPRITE / 2, SPRITE / 2, 0, SPRITE / 2, SPRITE / 2, SPRITE / 2);
+      grad.addColorStop(0, color);
+      grad.addColorStop(0.35, color);
+      grad.addColorStop(1, "transparent");
+      g.fillStyle = grad;
+      g.fillRect(0, 0, SPRITE, SPRITE);
+      sprites.set(color, s);
+      return s;
+    };
 
     const spawn = (): Particle => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: rnd(-0.35, 0.35),
-      vy: rnd(-0.35, 0.35),
-      r: rnd(1, 3),
+      vx: rnd(-0.32, 0.32),
+      vy: rnd(-0.32, 0.32),
+      r: rnd(1, 2.6),
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
       alpha: rnd(0.35, 0.9),
     });
@@ -64,8 +92,10 @@ export function HeroParticles() {
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // Particle count scales with area, capped for performance.
-      const count = Math.min(96, Math.max(28, Math.round((width * height) / 15000)));
+      // Fewer particles on phones; count scales with area, capped.
+      const divisor = isSmall ? 24000 : 15000;
+      const cap = isSmall ? 48 : 96;
+      const count = Math.min(cap, Math.max(22, Math.round((width * height) / divisor)));
       particles = Array.from({ length: count }, spawn);
     };
 
@@ -92,19 +122,13 @@ export function HeroParticles() {
         }
       }
 
-      // Glowing dots.
-      ctx.globalAlpha = 1;
+      // Glowing dots via cached sprites.
       for (const p of particles) {
-        ctx.beginPath();
-        ctx.fillStyle = p.color;
+        const size = p.r * 6;
         ctx.globalAlpha = p.alpha;
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = 12;
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.drawImage(spriteFor(p.color), p.x - size / 2, p.y - size / 2, size, size);
       }
       ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
     };
 
     const step = () => {
@@ -112,13 +136,11 @@ export function HeroParticles() {
         p.x += p.vx;
         p.y += p.vy;
 
-        // Wrap around the edges for a seamless field.
         if (p.x < -24) p.x = width + 24;
         else if (p.x > width + 24) p.x = -24;
         if (p.y < -24) p.y = height + 24;
         else if (p.y > height + 24) p.y = -24;
 
-        // Gentle push away from the cursor.
         if (pointer.active) {
           const dx = p.x - pointer.x;
           const dy = p.y - pointer.y;
@@ -136,6 +158,16 @@ export function HeroParticles() {
       raf = requestAnimationFrame(step);
     };
 
+    const start = () => {
+      if (running || reduceMotion || !visible || document.hidden) return;
+      running = true;
+      raf = requestAnimationFrame(step);
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    };
+
     const onPointerMove = (e: PointerEvent) => {
       const rect = parent.getBoundingClientRect();
       pointer.x = e.clientX - rect.left;
@@ -147,29 +179,42 @@ export function HeroParticles() {
       pointer.x = -9999;
       pointer.y = -9999;
     };
+    const onVisibility = () => (document.hidden ? stop() : start());
 
     resize();
-    // Under reduced motion there is no animation loop, so redraw the static
-    // field whenever the layout changes, otherwise it would blank out.
     const resizeObserver = new ResizeObserver(() => {
       resize();
       if (reduceMotion) draw();
     });
     resizeObserver.observe(parent);
 
+    // Only animate while the hero is actually on screen.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) start();
+        else stop();
+      },
+      { threshold: 0 },
+    );
+    io.observe(parent);
+
     if (reduceMotion) {
-      draw(); // one static frame, no animation loop
+      draw(); // one static frame, no loop
     } else {
       parent.addEventListener("pointermove", onPointerMove);
       parent.addEventListener("pointerleave", onPointerLeave);
-      raf = requestAnimationFrame(step);
+      document.addEventListener("visibilitychange", onVisibility);
+      start();
     }
 
     return () => {
-      cancelAnimationFrame(raf);
+      stop();
       resizeObserver.disconnect();
+      io.disconnect();
       parent.removeEventListener("pointermove", onPointerMove);
       parent.removeEventListener("pointerleave", onPointerLeave);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 

@@ -34,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable} h-full`}>
       <body className="bg-base text-text flex min-h-full flex-col antialiased">
+        <div className="ambient" aria-hidden="true" />
         <div className="grain-overlay" aria-hidden="true" />
         {children}
       </body>

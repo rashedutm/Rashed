@@ -61,19 +61,25 @@ html {
 
 body {
   background-color: var(--base);
-  /* Layered, fixed color glows so no part of the page is ever flat black.
-     Warm amber and burnt sienna up top, a cool teal counterweight low down —
-     complementary warmth/coolness gives the dark canvas depth. */
+  color: var(--text);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Fixed ambient colour glows. A `position: fixed` layer is composited once and
+   is NOT repainted on scroll — unlike `background-attachment: fixed`, which is
+   a well-known cause of mobile scroll jank. */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image:
     radial-gradient(50rem 34rem at 8% -6%, rgba(232, 131, 58, 0.2), transparent 58%),
     radial-gradient(46rem 38rem at 102% 4%, rgba(47, 182, 171, 0.16), transparent 55%),
     radial-gradient(40rem 34rem at 88% 55%, rgba(239, 107, 82, 0.1), transparent 55%),
     radial-gradient(60rem 48rem at 30% 116%, rgba(199, 91, 57, 0.14), transparent 60%);
-  background-attachment: fixed;
-  color: var(--text);
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
 ::selection {
@@ -93,6 +99,14 @@ body {
   opacity: 0.045;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* The blend-mode grain forces recompositing on every scroll frame, which is
+   costly on phones — drop it on small / touch screens for smoother scrolling. */
+@media (max-width: 768px) {
+  .grain-overlay {
+    display: none;
+  }
 }
 
 /* One faint warm glow, hero only. */

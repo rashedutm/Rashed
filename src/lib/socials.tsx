@@ -204,9 +204,52 @@ export const PLATFORMS: Record<PlatformKey, Platform> = {
 
 export const PLATFORM_LIST = Object.values(PLATFORMS);
 
-/** Renders a platform's logo at the current font size / colour. */
-export function BrandIcon({ platform, className }: { platform: string; className?: string }) {
-  return <span className={className}>{getPlatform(platform).icon}</span>;
+/**
+ * Each brand's real logo colour, adjusted so it stays visible on the dark
+ * background. Marks that are essentially black (GitHub, X, Medium, DEV) would
+ * disappear, so those use a light fallback instead of their true black.
+ */
+const PLATFORM_COLORS: Record<PlatformKey, string> = {
+  github: "#f0f0f0", // real black → light so it isn't lost on the dark bg
+  linkedin: "#3b9ae1",
+  x: "#f5f5f5", // real black → light
+  instagram: "#e4506f",
+  youtube: "#ff3b30",
+  facebook: "#2d88ff",
+  whatsapp: "#25d366",
+  telegram: "#2ca5e0",
+  website: "#e8833a",
+  email: "#e8833a",
+  phone: "#e8833a",
+  gitlab: "#fc6d26",
+  medium: "#f0f0f0", // real black → light
+  devto: "#f0f0f0", // real black → light
+  stackoverflow: "#f48024",
+  discord: "#7289da",
+  dribbble: "#ea4c89",
+  behance: "#2b8cff",
+  other: "#e8833a",
+};
+
+export function platformColor(key: string): string {
+  return PLATFORM_COLORS[key as PlatformKey] ?? "#e8833a";
+}
+
+/** Renders a platform's logo in its brand colour (or an override). */
+export function BrandIcon({
+  platform,
+  className,
+  color,
+}: {
+  platform: string;
+  className?: string;
+  color?: string;
+}) {
+  return (
+    <span className={className} style={{ color: color ?? platformColor(platform) }}>
+      {getPlatform(platform).icon}
+    </span>
+  );
 }
 
 export function getPlatform(key: string): Platform {

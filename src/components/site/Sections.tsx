@@ -214,11 +214,9 @@ export function SiteFooter({
           <FooterItem label="Email">
             <a
               href={`mailto:${profile.email}`}
-              className="hover:text-accent flex items-center gap-2 break-all transition-colors"
+              className="hover:text-accent flex items-center gap-2.5 break-all transition-colors"
             >
-              <span className="text-accent text-base">
-                <BrandIcon platform="email" />
-              </span>
+              <BrandIcon platform="email" className="shrink-0 text-lg" />
               {profile.email}
             </a>
           </FooterItem>
@@ -226,29 +224,25 @@ export function SiteFooter({
           <FooterItem label="Phone">
             <a
               href={`tel:${profile.phone.replace(/[^\d+]/g, "")}`}
-              className="hover:text-accent flex items-center gap-2 transition-colors"
+              className="hover:text-accent flex items-center gap-2.5 transition-colors"
             >
-              <span className="text-accent text-base">
-                <BrandIcon platform="phone" />
-              </span>
+              <BrandIcon platform="phone" className="shrink-0 text-lg" />
               {profile.phone}
             </a>
           </FooterItem>
 
           <FooterItem label="Elsewhere">
             {links.length > 0 ? (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2.5">
                 {links.map((link) => (
                   <a
                     key={link.id}
                     href={link.href as string}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-accent flex items-center gap-2 transition-colors"
+                    className="hover:text-accent flex items-center gap-2.5 transition-colors"
                   >
-                    <span className="text-accent text-base">
-                      <BrandIcon platform={link.platform} />
-                    </span>
+                    <BrandIcon platform={link.platform} className="shrink-0 text-lg" />
                     {link.label || getPlatform(link.platform).label}
                   </a>
                 ))}

@@ -110,6 +110,7 @@ export function SelectField({
   options,
   error,
   hint,
+  onChange,
 }: {
   label: string;
   name: string;
@@ -117,6 +118,7 @@ export function SelectField({
   options: { value: string; label: string }[];
   error?: string;
   hint?: string;
+  onChange?: (value: string) => void;
 }) {
   return (
     <Field label={label} name={name} error={error} hint={hint}>
@@ -124,6 +126,7 @@ export function SelectField({
         id={name}
         name={name}
         defaultValue={defaultValue}
+        onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         className={cn(controlClass, "appearance-none")}
       >
         {options.map((option) => (

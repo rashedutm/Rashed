@@ -41,7 +41,13 @@ const p = (d: string, extra?: ReactNode): ReactNode => (
   </svg>
 );
 
-const httpHref = (v: string) => v;
+// Accept URLs typed without a scheme (e.g. "www.linkedin.com/in/me" or
+// "linkedin.com/in/me") by defaulting them to https, so a link isn't silently
+// dropped just because the admin left off "https://".
+const httpHref = (v: string) => {
+  const t = v.trim();
+  return /^https?:\/\//i.test(t) ? t : `https://${t}`;
+};
 const mailHref = (v: string) => (v.startsWith("mailto:") ? v : `mailto:${v}`);
 const telHref = (v: string) => (v.startsWith("tel:") ? v : `tel:${v.replace(/[^\d+]/g, "")}`);
 

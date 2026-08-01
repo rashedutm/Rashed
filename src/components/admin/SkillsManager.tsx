@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { AddPanel, EditRow } from "./CrudShell";
 import { FormMessage, SubmitButton, TextField } from "./Fields";
 
-const HERO_MAX = 8;
+const HERO_MAX = 15;
 
 function SkillFields({
   errors,

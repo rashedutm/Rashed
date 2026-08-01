@@ -153,7 +153,7 @@ export function Hero({
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="relative hidden h-[26rem] lg:block"
+          className="relative hidden h-[34rem] lg:block"
         >
           <FloatingSkills skills={skills} />
         </motion.div>

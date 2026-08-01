@@ -37,7 +37,7 @@ export async function getSkillsByCategory() {
  * varied round-robin across all skills when nothing is flagged yet, so the hero
  * is never empty.
  */
-export async function getHeroSkills(limit = 8): Promise<string[]> {
+export async function getHeroSkills(limit = 15): Promise<string[]> {
   const flagged = await prisma.skill.findMany({
     where: { heroHighlight: true },
     orderBy: [{ sortOrder: "asc" }, { id: "asc" }],

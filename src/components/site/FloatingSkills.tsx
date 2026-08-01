@@ -2,16 +2,24 @@ import type { CSSProperties } from "react";
 import { paletteAt } from "@/lib/categories";
 
 // Hand-placed positions so the chips read as a loose, airy cluster rather than
-// a grid. Each drifts on its own clock for organic, non-synced motion.
+// a grid. Each drifts on its own clock for organic, non-synced motion. Up to 15
+// slots, scattered to keep them from overlapping.
 const SLOTS = [
-  { top: "6%", left: "26%", dur: "6.5s", delay: "0s" },
-  { top: "20%", left: "62%", dur: "7.5s", delay: "-1.2s" },
-  { top: "34%", left: "8%", dur: "8s", delay: "-2.4s" },
-  { top: "46%", left: "44%", dur: "6.8s", delay: "-0.6s" },
-  { top: "60%", left: "68%", dur: "7.2s", delay: "-3s" },
-  { top: "68%", left: "18%", dur: "8.4s", delay: "-1.8s" },
-  { top: "82%", left: "48%", dur: "7s", delay: "-2.1s" },
-  { top: "14%", left: "4%", dur: "7.8s", delay: "-3.6s" },
+  { top: "3%", left: "30%", dur: "6.5s", delay: "0s" },
+  { top: "9%", left: "63%", dur: "7.5s", delay: "-1.2s" },
+  { top: "16%", left: "13%", dur: "8s", delay: "-2.4s" },
+  { top: "22%", left: "44%", dur: "6.8s", delay: "-0.6s" },
+  { top: "29%", left: "72%", dur: "7.2s", delay: "-3s" },
+  { top: "35%", left: "25%", dur: "8.4s", delay: "-1.8s" },
+  { top: "42%", left: "55%", dur: "7s", delay: "-2.1s" },
+  { top: "48%", left: "12%", dur: "7.8s", delay: "-3.6s" },
+  { top: "53%", left: "68%", dur: "6.6s", delay: "-0.9s" },
+  { top: "60%", left: "37%", dur: "8.2s", delay: "-2.7s" },
+  { top: "66%", left: "62%", dur: "7.4s", delay: "-1.5s" },
+  { top: "71%", left: "18%", dur: "6.9s", delay: "-3.3s" },
+  { top: "79%", left: "47%", dur: "8.1s", delay: "-0.3s" },
+  { top: "85%", left: "70%", dur: "7.1s", delay: "-2.9s" },
+  { top: "91%", left: "28%", dur: "7.7s", delay: "-1.1s" },
 ];
 
 /**

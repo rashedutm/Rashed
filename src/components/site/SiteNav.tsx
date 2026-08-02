@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { scrollToHash } from "@/lib/scroll";
+import { HashCleaner } from "./HashCleaner";
 
 const LINKS = [
   { href: "/#work", label: "Work" },
@@ -23,7 +24,9 @@ export function SiteNav() {
   }, []);
 
   return (
-    <header
+    <>
+      <HashCleaner />
+      <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
@@ -112,6 +115,7 @@ export function SiteNav() {
           </div>
         </div>
       )}
-    </header>
+      </header>
+    </>
   );
 }

@@ -255,11 +255,10 @@ export function SiteFooter({
           <FooterItem label="Location">{profile.location}</FooterItem>
         </div>
 
-        <div className="text-muted mt-16 flex flex-col gap-2 border-t border-[var(--hairline)] pt-6 text-[12px] sm:flex-row sm:items-center sm:justify-between">
+        <div className="text-muted mt-16 border-t border-[var(--hairline)] pt-6 text-[12px]">
           <p>
             © {new Date().getFullYear()} {profile.name}
           </p>
-          <p>Built with Next.js · Deployed on Vercel</p>
         </div>
       </div>
     </footer>
